@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OBS BAPPY | Reverse Engineering & C# Hub</title>
+    <style>
+        :root {
+            --neon-green: #0f0;
+            --dark-bg: #0a0a0a;
+            --btn-bg: #111;
+            --btn-hover: #222;
+            --accent: #6a0dad;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--neon-green);
+        }
+
+        h1 {
+            color: var(--neon-green);
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            background: var(--btn-bg);
+            border: 1px solid var(--neon-green);
+            border-radius: 5px;
+            color: var(--neon-green);
+            font-size: 1rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+            .btn:hover {
+                background: var(--btn-hover);
+                transform: scale(1.02);
+            }
+
+        #codeArea {
+            background: #111;
+            padding: 1rem;
+            border: 1px solid #333;
+            border-radius: 5px;
+            margin-top: 1rem;
+            overflow-x: auto;
+            display: none;
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        #backBtn {
+            margin-top: 1rem;
+            padding: 8px 16px;
+            border: none;
+            background: var(--neon-green);
+            color: black;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+            #backBtn:hover {
+                background: #4f4;
+            }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.85rem;
+            border-top: 1px solid #333;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>OBS BAPPY</h1>
+        <p>REVERSE ENGINEERING & C# HUB</p>
+    </header>
+
+    <div class="container">
+        <button class="btn" onclick="showCode('login')">Login Form Code</button>
+        <button class="btn" onclick="showCode('loop')">For Loop Example</button>
+        <button class="btn" onclick="showCode('array')">Array Example</button>
+        <button class="btn" onclick="showCode('ifelse')">If-Else Example</button>
+        <button class="btn" onclick="showCode('class')">Class Example</button>
+        <button class="btn" onclick="showCode('inheritance')">Inheritance Example</button>
+        <button class="btn" onclick="showCode('dll')">DLL Injection Code</button>
+        <button class="btn" onclick="showCode('kernel')">Kernel Injection Code</button>
+        <button class="btn" onclick="showCode('file')">File Read/Write</button>
+        <button class="btn" onclick="showCode('exception')">Exception Handling</button>
+        <button class="btn" onclick="showCode('property')">Property Example</button>
+        <button class="btn" onclick="showCode('constructor')">Constructor Example</button>
+        <button class="btn" onclick="showCode('list')">List Example</button>
+        <button class="btn" onclick="showCode('dictionary')">Dictionary Example</button>
+    </div>
+
+    <div class="container" id="codeArea">
+        <pre id="codeBlock"></pre>
+        <button id="backBtn" onclick="goBack()">Back</button>
+    </div>
+
+    <footer>
+        © 2025 OBS BAPPY | Educational Purpose Only
+    </footer>
+
+    <script>
+        const codes = {
+            login: `using System;
+using System.Windows.Forms;
+
+public class LoginForm : Form
+{
+        public LoginForm()
+        {
+            Text = "Login Form";
+            // Add controls here
+        }
+}`,
+            loop: `for (int i = 0; i < 10; i++)
+{
+        Console.WriteLine(i);
+}`,
+            array: `int[] numbers = {1, 2, 3, 4, 5};
+foreach (int n in numbers)
+{
+        Console.WriteLine(n);
+}`,
+            ifelse: `int x = 5;
+if (x > 0)
+{
+        Console.WriteLine("Positive");
+}
+else
+{
+        Console.WriteLine("Non-positive");
+}`,
+            class: `public class Car
+{
+        public string Model { get; set; }
+}`,
+            inheritance: `public class Vehicle { }
+public class Car : Vehicle { }`,
+            dll: `// DLL Injection Example
+using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+
+public class Injector
+{
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr OpenProcess(int access, bool inherit, int pid);
+}`,
+            kernel: `// Kernel Injection Concept
+// Requires driver-level code and signing
+public class KernelInjector
+{
+        // Kernel code here
+}`,
+            file: `using System.IO;
+File.WriteAllText("test.txt", "Hello");
+string text = File.ReadAllText("test.txt");`,
+            exception: `try
+{
+        int x = int.Parse("abc");
+}
+catch (Exception ex)
+{
+        Console.WriteLine(ex.Message);
+}`,
+            property: `public class Person
+{
+        public string Name { get; set; }
+}`,
+            constructor: `public class Person
+{
+        public Person(string name)
+        {
+            Name = name;
+        }
+        public string Name { get; }
+}`,
+            list: `using System.Collections.Generic;
+List<int> list = new List<int> {1, 2, 3};`,
+            dictionary: `using System.Collections.Generic;
+Dictionary<string, int> dict = new Dictionary<string, int>();
+dict.Add("A", 1);`
+        };
+
+        function showCode(key) {
+            document.querySelector('.container').style.display = 'none';
+            document.getElementById('codeArea').style.display = 'block';
+            document.getElementById('codeBlock').innerText = codes[key] || 'Code not found.';
+        }
+
+        function goBack() {
+            document.querySelector('.container').style.display = 'block';
+            document.getElementById('codeArea').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
